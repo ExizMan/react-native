@@ -40,6 +40,15 @@ const PostDate = styled.Text`
   color: rgba(0, 0, 0, 0.4);
   margin-top: 2px;
 `;
+const ImgContainer = styled.View`
+  flex: 1;
+  width: 100%;
+  height: ${width / 2}px;
+  border-radius: 12px;
+  margin: 8px 0;
+
+  background-color: lightgray;
+`;
 
 const truncateTitle = (str) => {
   if (str.length >= 50) {
@@ -48,14 +57,6 @@ const truncateTitle = (str) => {
 
   return str;
 };
-const ImgContainer = styled.View`
-  flex: 1;
-  width: 100%;
-  height: ${width / 2}px;
-  border-radius: 12px;
-
-  background-color: lightgray;
-`;
 
 // date-fns => format
 
@@ -63,7 +64,7 @@ export const Post = ({ title, imageUrl, createdAt, isLoaded }) => {
   return (
     <PostView>
       <PostDetails>
-        <PostTitle>{truncateTitle(title)}</PostTitle>
+        <PostTitle>{title}</PostTitle>
         <ImgContainer>
           <PostImage source={{ uri: imageUrl }} />
         </ImgContainer>

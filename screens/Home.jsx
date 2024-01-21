@@ -10,18 +10,27 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useFetchNews } from "../hooks/getnews";
+
 import { Post } from "../components/Post";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchNews } from "../store/postSlice";
 
 const url =
   "https://newsapi.org/v2/top-headlines?country=us&apiKey=677c9719571a45b9b1a86ed3bced6ab7";
 
 export const HomeScreen = ({ navigation }) => {
-  const [isLoading, setIsLoading, items, setItems] = useFetchNews(url);
+  const dispatch = useDispatch();
+  const { status, posts, err } = useSelector((state) => state.posts);
 
-  console.log(items);
+  React.useEffect(() => {
+    console.log("work");
+    dispatch(fetchNews(url));
+  }, []);
+  React.useEffect(() => {
+    console.log(status);
+  }, [status]);
 
-  if (isLoading) {
+  if (status === "loading") {
     return (
       <View
         style={{
@@ -36,12 +45,12 @@ export const HomeScreen = ({ navigation }) => {
     );
   }
 
-  if (items != null) {
+  if (posts) {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={items}
-          keyExtractor={(item) => item.ind}
+          data={posts}
+          // keyExtractor={(item) => item.ind}
           renderItem={({ item }) => (
             <Post
               title={item.title}
