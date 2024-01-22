@@ -52,11 +52,22 @@ export const HomeScreen = ({ navigation }) => {
           data={posts}
           // keyExtractor={(item) => item.ind}
           renderItem={({ item }) => (
-            <Post
-              title={item.title}
-              createdAt={item.publishedAt}
-              imageUrl={item.urlToImage}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("FullPost", {
+                  // params: {  },
+                  title: item.title,
+                  imageUrl: item.urlToImage,
+                  content: item.content,
+                })
+              }
+            >
+              <Post
+                title={item.title}
+                createdAt={item.publishedAt}
+                imageUrl={item.urlToImage}
+              />
+            </TouchableOpacity>
           )}
         />
       </View>

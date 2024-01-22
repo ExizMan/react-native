@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Loading } from "../components/Loading";
 
@@ -11,46 +11,31 @@ const PostImage = styled.Image`
   margin-bottom: 20px;
 `;
 
-const PostText = styled.Text`
+const PostTitle = styled.Text`
+  flex: 1;
+  padding: 20px 0;
   font-size: 18px;
+  font-weight: 800;
+  line-height: 24px;
+`;
+
+const PostText = styled.Text`
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 24px;
 `;
 
 export const FullPostScreen = ({ route, navigation }) => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [data, setData] = React.useState();
-  const { id, title } = route.params;
-
-  React.useEffect(() => {
-    navigation.setOptions({
-      title,
-    });
-    axios
-      .get("https://5c3755177820ff0014d92711.mockapi.io/articles/" + id)
-      .then(({ data }) => {
-        setData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-        Alert.alert("Ошибка", "Не удалось получить статью");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Loading />
-      </View>
-    );
-  }
+  const { title, imageUrl, content } = route.params;
+  console.log(content);
 
   return (
-    <View style={{ padding: 20 }}>
-      <PostImage source={{ uri: data.imageUrl }} />
-      <PostText>{data.text}</PostText>
-    </View>
+    <ScrollView style={{ padding: 10 }}>
+      <PostTitle>{title}</PostTitle>
+      {imageUrl != undefined && <PostImage source={{ uri: imageUrl }} />}
+
+      <PostText>{content}</PostText>
+    </ScrollView>
   );
 };
