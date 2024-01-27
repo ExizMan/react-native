@@ -11,24 +11,21 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { Post } from "../components/Post";
+import { Post } from "../../components/Post";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchNews } from "../store/postSlice";
+import { fetchNews } from "../../store/postSlice";
 
 const url =
   "https://newsapi.org/v2/top-headlines?country=us&apiKey=677c9719571a45b9b1a86ed3bced6ab7";
 
 export const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { status, posts, err } = useSelector((state) => state.posts);
+  const { posts, status, err } = useSelector((state) => state.root.posts);
 
   React.useEffect(() => {
     console.log("work");
     dispatch(fetchNews(url));
   }, []);
-  React.useEffect(() => {
-    console.log(status);
-  }, [status]);
 
   if (status === "loading") {
     return (
@@ -51,24 +48,26 @@ export const HomeScreen = ({ navigation }) => {
         <FlatList
           data={posts}
           // keyExtractor={(item) => item.ind}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("FullPost", {
-                  // params: {  },
-                  title: item.title,
-                  imageUrl: item.urlToImage,
-                  content: item.content,
-                })
-              }
-            >
-              <Post
-                title={item.title}
-                createdAt={item.publishedAt}
-                imageUrl={item.urlToImage}
-              />
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => {
+            if (item.title !== "[Removed]")
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("FullPost", {
+                      title: item.title,
+                      imageUrl: item.urlToImage,
+                      content: item.content,
+                    })
+                  }
+                >
+                  <Post
+                    title={item.title}
+                    createdAt={item.publishedAt}
+                    imageUrl={item.urlToImage}
+                  />
+                </TouchableOpacity>
+              );
+          }}
         />
       </View>
     );

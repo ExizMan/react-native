@@ -1,14 +1,14 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { FullPostScreen } from "./FullPost";
-import { HomeScreen } from "./Home";
+import { FullPostScreen } from "./screens/FullPost";
+import { HomeScreen } from "./screens/Home";
 //import HelloWorld from "./HelloWorld";
 import styled from "styled-components/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Text, Button } from "react-native";
-import { TouchableHighlight } from "react-native";
+import { Text } from "react-native";
+import { ChannelsScreen } from "./screens/Channels";
+import { FavoriteChannelsScreen } from "./screens/FavoriteChannels";
 
 const Tab = createBottomTabNavigator();
 const homeName = "Новости";
@@ -31,11 +31,15 @@ function StackNav() {
         headerTintColor: "white",
         headerRight: () => {
           return (
-            <Button
+            // <TouchableOpacity >
+            <Ionicons.Button
+              name="list"
+              backgroundColor="rgba(0,0,0,0)"
+              size={25}
+              color="white"
               onPress={() => navigation.navigate(homeName)}
-              title="+"
-              color="#fff"
             />
+            // </TouchableOpacity>
           );
         },
       })}
@@ -84,7 +88,8 @@ function TabNav() {
         },
       })}
     >
-      <Tab.Screen name="Feed" component={Feed} />
+      <Tab.Screen name="Feed" component={ChannelsScreen} />
+      <Tab.Screen name="Favorite" component={FavoriteChannelsScreen} />
 
       {/* <Tab.Screen name={homeName} component={HomeScreen} /> */}
       {/* <Tab.Screen name="Stack" component={StackNav} /> */}

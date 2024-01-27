@@ -20,7 +20,8 @@ const PostImage = styled.Image`
   height: ${width / 2}px;
   border-radius: 12px;
   margin-right: 12px;
-  position: absolute;
+  background-color: lightgray;
+  margin: 8px 0;
 `;
 
 const PostTitle = styled.Text`
@@ -40,34 +41,17 @@ const PostDate = styled.Text`
   color: rgba(0, 0, 0, 0.4);
   margin-top: 2px;
 `;
-const ImgContainer = styled.View`
-  flex: 1;
-  width: 100%;
-  height: ${width / 2}px;
-  border-radius: 12px;
-  margin: 8px 0;
-
-  background-color: lightgray;
-`;
-
-const truncateTitle = (str) => {
-  if (str.length >= 50) {
-    return str.substring(0, 50) + "...";
-  }
-
-  return str;
-};
 
 // date-fns => format
 
-export const Post = ({ title, imageUrl, createdAt, isLoaded }) => {
+export const Post = ({ title, imageUrl, createdAt }) => {
   return (
     <PostView>
       <PostDetails>
         <PostTitle>{title}</PostTitle>
-        <ImgContainer>
-          <PostImage source={{ uri: imageUrl }} />
-        </ImgContainer>
+
+        <PostImage source={{ uri: imageUrl }} />
+
         <PostDate>{new Date(createdAt).toLocaleDateString()}</PostDate>
       </PostDetails>
     </PostView>
