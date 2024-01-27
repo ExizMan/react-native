@@ -17,7 +17,7 @@ export const getAllData = async () => {
   }
 };
 export const contains = (item, subArray) => {
-  for (let i = 0; i < subArray.length; i++) {
+  for (let i in subArray) {
     if (subArray.indexOf(item) != 1) {
       return true;
     }

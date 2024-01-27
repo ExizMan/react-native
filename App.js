@@ -6,7 +6,7 @@ import store from "./store";
 import "react-native-gesture-handler";
 export default function App() {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <Provider store={store}>
         <SafeAreaView backgroundColor="#494d5f">
           <StatusBar barStyle="light-content" />

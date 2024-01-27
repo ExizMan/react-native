@@ -32,8 +32,8 @@ const channelSlice = createSlice({
       state.favorite.push(action.payload);
     },
     deleteFromFavorite(state, action) {
-      state.favorite = state.todos.filter(
-        (todo) => todo.id !== action.payload.id
+      state.favorite = state.favorite.filter(
+        (favorite) => favorite.id !== action.payload.id
       );
     },
   },

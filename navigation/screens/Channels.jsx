@@ -11,8 +11,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-
-import { Channel } from "../../components/Channel";
+import { contains } from "../../hooks/utils";
+import { CommonChannel } from "../../components/channel/CommonChannel";
+import { FavoriteChannel } from "../../components/channel/FavoriteChannel";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchChannels,
@@ -25,7 +26,9 @@ const url =
 
 export const ChannelsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { status, channels, err } = useSelector((state) => state.root.channels);
+  const { status, favorite, channels, err } = useSelector(
+    (state) => state.root.channels
+  );
   const { isFocused, setFocus } = useState("");
 
   React.useEffect(() => {
@@ -53,21 +56,21 @@ export const ChannelsScreen = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <FlatList
           data={channels}
-          // keyExtractor={(item) => item.ind}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
+            if (!favorite.find((elem) => elem.id == item.id)) {
+              return <CommonChannel item={item} color="whitesmoke" />;
+            }
             return (
-              // <TouchableOpacity
-              //   onPress={() =>
-              //     navigation.navigate("FullPost", {
-              //       title: item.title,
-              //       imageUrl: item.urlToImage,
-              //       content: item.content,
-              //     })
-              //   }
-              // >
-              <Channel item={item} />
-              // </TouchableOpacity>
+              <FavoriteChannel item={item} color="rgba(152, 251, 152, 0.5)" />
             );
+            {
+              !favorite.find((elem) => elem.id == item.id) ? (
+                <CommonChannel item={item} color="whitesmoke" />
+              ) : (
+                <FavoriteChannel item={item} color="rgba(152, 251, 152, 0.5)" />
+              );
+            }
           }}
         />
       </View>

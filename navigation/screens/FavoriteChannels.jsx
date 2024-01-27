@@ -12,45 +12,30 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { Channel } from "../../components/Channel";
+import { Channel } from "../../components/channel/Channel";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchChannels,
   addToFavorite,
   deleteFromFavorite,
 } from "../../store/channelSlice";
+import { FavoriteChannel } from "../../components/channel/FavoriteChannel";
 
 const url =
   "https://newsapi.org/v2/top-headlines/sources?apiKey=677c9719571a45b9b1a86ed3bced6ab7";
 
 export const FavoriteChannelsScreen = ({ navigation }) => {
-  const dispatch = useDispatch();
   const { status, channels, favorite, err } = useSelector(
     (state) => state.root.channels
   );
   const ref = useRef(null);
-
-  if (status === "loading") {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ActivityIndicator size="large" />
-        <Text style={{ marginTop: 15 }}>Загрузка...</Text>
-      </View>
-    );
-  }
 
   if (favorite) {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
           data={favorite}
-          // keyExtractor={(item) => item.ind}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
               // <TouchableOpacity
@@ -62,7 +47,7 @@ export const FavoriteChannelsScreen = ({ navigation }) => {
               //     })
               //   }
               // >
-              <Channel item={item} />
+              <FavoriteChannel item={item} color="whitesmoke" />
               // </TouchableOpacity>
             );
           }}
