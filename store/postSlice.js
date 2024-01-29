@@ -14,12 +14,11 @@ export const fetchNews = createAsyncThunk(
     console.log("correct");
     try {
       const resp = await axios.get(url);
-      //   console.log(resp.data.articles);
       return resp.data.articles;
     } catch (err) {
       console.log(err);
       Alert.alert("Ошибка", "Не удалось получить статьи");
-      return rejectWithValue(err);
+      return rejectWithValue(JSON.stringify(err));
     }
   }
 );

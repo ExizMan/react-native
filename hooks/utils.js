@@ -18,9 +18,19 @@ export const getAllData = async () => {
 };
 export const contains = (item, subArray) => {
   for (let i in subArray) {
-    if (subArray.indexOf(item) != 1) {
+    if (subArray.indexOf(item) != -1) {
       return true;
     }
     return false;
   }
+};
+
+const re = /(?:https?:\/\/)?(?:www\.)?(.*?)\//;
+
+const produceDomains = (arr) => {
+  let domains = [];
+  arr.map((item) => domains.push(item.url.match(re)[1]));
+  console.log(domains);
+  const url = `https://newsapi.org/v2/everything?apiKey=677c9719571a45b9b1a86ed3bced6ab7&"domains=${domains.join()}`;
+  return url;
 };

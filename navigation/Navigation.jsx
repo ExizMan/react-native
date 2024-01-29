@@ -37,25 +37,25 @@ function StackNav() {
               backgroundColor="rgba(0,0,0,0)"
               size={25}
               color="white"
-              onPress={() => navigation.navigate(homeName)}
+              onPress={() => navigation.navigate("News")}
             />
             // </TouchableOpacity>
           );
         },
       })}
     >
-      <Stack.Screen name="TabNav" component={TabNav} />
+      <Stack.Screen name="Sources" component={TabNav} />
 
-      <Stack.Screen name={homeName} component={HomeScreen} />
+      <Stack.Screen name="News" component={HomeScreen} />
 
-      <Stack.Screen name="FullPost" component={FullPostScreen} />
+      <Stack.Screen name="Article" component={FullPostScreen} />
     </Stack.Navigator>
   );
 }
 function TabNav() {
   return (
     <Tab.Navigator
-      initialRouteName={homeName}
+      initialRouteName="Channels"
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: "#3e90cf",
         tabBarInactiveTintColor: "grey",
@@ -79,16 +79,16 @@ function TabNav() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let rn = route.name;
-          if (rn === homeName) {
+          if (rn === "Channels") {
             iconName = focused ? "home" : "home-outline";
           } else {
-            iconName = focused ? "list" : "list-outline";
+            iconName = focused ? "star" : "star-outline";
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
     >
-      <Tab.Screen name="Feed" component={ChannelsScreen} />
+      <Tab.Screen name="Channels" component={ChannelsScreen} />
       <Tab.Screen name="Favorite" component={FavoriteChannelsScreen} />
 
       {/* <Tab.Screen name={homeName} component={HomeScreen} /> */}

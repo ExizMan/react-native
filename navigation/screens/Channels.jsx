@@ -1,38 +1,23 @@
-import axios from "axios";
-import React from "react";
-import { useRef, useState } from "react";
-import {
-  Alert,
-  Text,
-  FlatList,
-  View,
-  ActivityIndicator,
-  RefreshControl,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { contains } from "../../hooks/utils";
+import { useEffect, useMemo } from "react";
+import { Text, FlatList, View, ActivityIndicator } from "react-native";
 import { CommonChannel } from "../../components/channel/CommonChannel";
-import { FavoriteChannel } from "../../components/channel/FavoriteChannel";
+import { RefreshControl } from "react-native-gesture-handler";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchChannels,
-  addToFavorite,
-  deleteFromFavorite,
-} from "../../store/channelSlice";
+import { fetchChannels } from "../../store/channelSlice";
 
 const url =
   "https://newsapi.org/v2/top-headlines/sources?apiKey=677c9719571a45b9b1a86ed3bced6ab7";
 
-export const ChannelsScreen = ({ navigation }) => {
+export const ChannelsScreen = () => {
   const dispatch = useDispatch();
-  const { status, favorite, channels, err } = useSelector(
+  const { status, favorite, channels } = useSelector(
     (state) => state.root.channels
   );
-  const { isFocused, setFocus } = useState("");
 
-  React.useEffect(() => {
-    console.log("work");
+  const memoizedChannels = useMemo(() => channels, [channels]);
+  const green = "rgba(152, 251, 152, 0.5)";
+
+  useEffect(() => {
     dispatch(fetchChannels(url));
   }, []);
 
@@ -49,28 +34,29 @@ export const ChannelsScreen = ({ navigation }) => {
         <Text style={{ marginTop: 15 }}>Загрузка...</Text>
       </View>
     );
-  }
-
-  if (channels) {
+  } else if (memoizedChannels) {
     return (
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
         <FlatList
-          data={channels}
+          refreshControl={
+            <RefreshControl onRefresh={() => dispatch(fetchChannels(url))} />
+          }
+          data={memoizedChannels}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
-            if (!favorite.find((elem) => elem.id == item.id)) {
-              return <CommonChannel item={item} color="whitesmoke" />;
-            }
+            // if (!favorite.find((elem) => elem.id == item.id))
             return (
-              <FavoriteChannel item={item} color="rgba(152, 251, 152, 0.5)" />
+              <CommonChannel
+                item={item}
+                isFavorite={
+                  favorite.find((elem) => elem.id == item.id) ? true : false
+                }
+              />
             );
-            {
-              !favorite.find((elem) => elem.id == item.id) ? (
-                <CommonChannel item={item} color="whitesmoke" />
-              ) : (
-                <FavoriteChannel item={item} color="rgba(152, 251, 152, 0.5)" />
-              );
-            }
           }}
         />
       </View>

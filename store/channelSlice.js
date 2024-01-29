@@ -1,9 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createReducer,
-  createAction,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Alert } from "react-native";
 import axios from "axios";
 
@@ -11,15 +6,18 @@ export const fetchChannels = createAsyncThunk(
   "channels/fetchChannels",
 
   async function (url, { rejectWithValue }) {
-    console.log("correct2");
     try {
       const resp = await axios.get(url);
-      console.log(resp.data.sources);
+      if (resp.data.status != "ok")
+        throw new Error(
+          "status not ok",
+          "status not ok, probably status code is 40X"
+        );
       return resp.data.sources;
     } catch (err) {
       console.log(err);
       Alert.alert("Ошибка", "Не удалось загрузить каналы");
-      return rejectWithValue(err);
+      return rejectWithValue(JSON.stringify(err));
     }
   }
 );

@@ -1,34 +1,10 @@
-import axios from "axios";
 import React from "react";
-import { useRef } from "react";
-import {
-  Alert,
-  Text,
-  FlatList,
-  View,
-  ActivityIndicator,
-  RefreshControl,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { FlatList, View } from "react-native";
+import { useSelector } from "react-redux";
+import { CommonChannel } from "../../components/channel/CommonChannel";
 
-import { Channel } from "../../components/channel/Channel";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchChannels,
-  addToFavorite,
-  deleteFromFavorite,
-} from "../../store/channelSlice";
-import { FavoriteChannel } from "../../components/channel/FavoriteChannel";
-
-const url =
-  "https://newsapi.org/v2/top-headlines/sources?apiKey=677c9719571a45b9b1a86ed3bced6ab7";
-
-export const FavoriteChannelsScreen = ({ navigation }) => {
-  const { status, channels, favorite, err } = useSelector(
-    (state) => state.root.channels
-  );
-  const ref = useRef(null);
+export const FavoriteChannelsScreen = () => {
+  const { favorite } = useSelector((state) => state.root.channels);
 
   if (favorite) {
     return (
@@ -37,19 +13,7 @@ export const FavoriteChannelsScreen = ({ navigation }) => {
           data={favorite}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
-            return (
-              // <TouchableOpacity
-              //   onPress={() =>
-              //     navigation.navigate("FullPost", {
-              //       title: item.title,
-              //       imageUrl: item.urlToImage,
-              //       content: item.content,
-              //     })
-              //   }
-              // >
-              <FavoriteChannel item={item} color="whitesmoke" />
-              // </TouchableOpacity>
-            );
+            return <CommonChannel item={item} isFavorite={true} />;
           }}
         />
       </View>
